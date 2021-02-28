@@ -1,6 +1,6 @@
 <script lang="ts">
   import Tailwind from "./Tailwind.svelte";
-  import Login from "./components/login.svelte"
+  import Login from "./components/login/login.svelte";
 </script>
 
 <Tailwind />
