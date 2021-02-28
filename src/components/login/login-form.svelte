@@ -1,28 +1,29 @@
 <script lang="ts">
+	import { BASE_URL } from './../../settings.js';
   import Login32 from "carbon-icons-svelte/lib/Login32";
   import Password32 from "carbon-icons-svelte/lib/Password32";
   import Button from "../shared/button.svelte";
   import Bee24 from "carbon-icons-svelte/lib/Bee24";
   import * as yup from "yup";
   import { Form, Input } from "sveltejs-forms";
+  import axios from 'axios';
 
-  async function handleSubmit({ detail: { values, setSubmitting, resetForm } }) {
-    setTimeout(async () => {
-      try {
-        const res = await fetch('https://cured-api.herokuapp.com/users', {
-          method: 'GET',
-        })
-      } catch (error) {
-        console.log(error) 
-      }
-      setSubmitting(false);
-    }, 10000);
-
+  async function handleSubmit({ detail: { values, setSubmitting, resetForm } }) {     
+    await validateLogin(values);  
+    setSubmitting(false);
+    
     resetForm({
       email: '',
       password: '',
     });
   }
+
+  const validateLogin = async (values) => {
+    const response = await axios.post(`${BASE_URL}/login`, 
+      values
+    );
+    return await response;
+  };
 
   const schema = yup.object().shape({
     email: yup.string().required().email(),
@@ -30,8 +31,8 @@
   });
 
   const initialValues = {
-    email: "",
-    password: "",
+    email: 'tygrice@milova.na',
+    password: 'milovana',
   };
 </script>
 
