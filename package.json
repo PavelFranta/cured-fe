@@ -4,7 +4,7 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "start": "sirv public",
+    "start": "sirv public --single",
     "validate": "svelte-check"
   },
   "devDependencies": {
@@ -14,6 +14,7 @@
     "@tsconfig/svelte": "^1.0.0",
     "autoprefixer": "^10.2.3",
     "carbon-components-svelte": "^0.29.1",
+    "page": "^1.11.6",
     "postcss": "^8.2.4",
     "rollup": "^2.3.4",
     "rollup-plugin-css-only": "^3.1.0",

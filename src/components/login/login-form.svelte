@@ -6,7 +6,7 @@
   import * as yup from "yup";
   import { Form, Input } from "sveltejs-forms";
   import axios from 'axios';
-  import { onMount } from "svelte";
+  import { redirect } from "../../pager";
 
   let url = "BASE_URL";
 
@@ -20,28 +20,21 @@
       password: '',
     });
   }
-
-  onMount(() => {
-    console.log(url);
-  }) 
   
   const validateLogin = async (values) => {
 
-    const response = await axios.post(`${url}/login`, 
+    const { data } = await axios.post(`${url}/login`, 
       values
     );
-    return await response;
+    if (data.user.length) {
+      redirect('/dashboard');
+    };
   };
 
   const schema = yup.object().shape({
     email: yup.string().required().email(),
-    password: yup.string().min(4),
+    password: yup.string(),
   });
-
-  const initialValues = {
-    email: 'tygrice@milova.na',
-    password: 'milovana',
-  };
 </script>
 
 <style>
@@ -81,7 +74,6 @@
 
 <Form
   {schema}
-  {initialValues}
   validateOnChange={true}
   on:submit={handleSubmit}
   let:isSubmitting
