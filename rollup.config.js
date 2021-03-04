@@ -7,8 +7,11 @@ import sveltePreprocess from "svelte-preprocess";
 import typescript from "@rollup/plugin-typescript";
 import css from "rollup-plugin-css-only";
 import svelteSVG from "rollup-plugin-svelte-svg";
+import replace from "@rollup/plugin-replace";
 
 const production = !process.env.ROLLUP_WATCH;
+const productionBaseURL='https://cured-api.herokuapp.com';
+const devBaseURL='http://localhost:3000';
 
 function serve() {
   let server;
@@ -44,6 +47,9 @@ export default {
     file: "public/build/bundle.js",
   },
   plugins: [
+    replace({
+      'BASE_URL': production ? productionBaseURL : devBaseURL
+    }),
     svelte({
       // add postcss config with tailwind
       preprocess: sveltePreprocess({

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { BASE_URL } from './../../settings.js';
   import Login32 from "carbon-icons-svelte/lib/Login32";
   import Password32 from "carbon-icons-svelte/lib/Password32";
   import Button from "../shared/button.svelte";
@@ -7,8 +6,12 @@
   import * as yup from "yup";
   import { Form, Input } from "sveltejs-forms";
   import axios from 'axios';
+  import { onMount } from "svelte";
+
+  let url = "BASE_URL";
 
   async function handleSubmit({ detail: { values, setSubmitting, resetForm } }) {     
+    
     await validateLogin(values);  
     setSubmitting(false);
     
@@ -18,8 +21,13 @@
     });
   }
 
+  onMount(() => {
+    console.log(url);
+  }) 
+  
   const validateLogin = async (values) => {
-    const response = await axios.post(`${BASE_URL}/login`, 
+
+    const response = await axios.post(`${url}/login`, 
       values
     );
     return await response;
