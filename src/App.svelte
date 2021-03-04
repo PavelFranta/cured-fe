@@ -18,8 +18,7 @@
   };
 </script>
 
-<style>
-</style>
+<style></style>
 
 <Tailwind />
 <main>
@@ -39,5 +38,4 @@
       <h2>Sorry. Page not found.</h2>
     </NotFound>
   </Router>
-
 </main>
