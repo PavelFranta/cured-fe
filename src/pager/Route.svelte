@@ -1,13 +1,15 @@
 <script>
-  import { register, activeRoute } from "./Router.svelte";
+  import { register, activeRoute } from './Router.svelte';
 
-  export let path = "/";
+  export let path = '/';
   export let component = null;
+
+  // define new middleware property
   export let middleware = [];
 
-  // page.js params placeholder
   let params = {};
 
+  // pass in middlewares to Router.
   register({ path, component, middleware });
 
   $: if ($activeRoute.path === path) {
@@ -15,14 +17,13 @@
   }
 </script>
 
-<!-- if this is current active route -->
 {#if $activeRoute.path === path}
-  <!-- prefer component over slot -->
   {#if $activeRoute.component}
     <svelte:component
-      this={$activeRoute.component}
+      this="{$activeRoute.component}"
       {...$$restProps}
-      {...params} />
+      {...params}
+    />
   {:else}
     <slot {params} />
   {/if}

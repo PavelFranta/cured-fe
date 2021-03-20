@@ -4,16 +4,20 @@
   
 	import Dashboard from './pages/dashboard.svelte';
   import Login from "./pages/login.svelte";
+  import axios from 'axios';
+  import {getCookie} from "./utils/cookie"
 
-  const data = { foo: "bar", custom: true };
+  let url = "BASE_URL";
 
-  const guard = (ctx, next) => {
-    // check for example if user is authenticated
-    if (true) {
+  const guard = async (ctx, next) => {
+    let validatedUserViaToken = false;
+    if (getCookie('cured-token')) {
+      const {data} = await axios.get(`${url}/login/${getCookie('cured-token')}`)
+      validatedUserViaToken = data.user;
+    }
+    if (!validatedUserViaToken.id) {
       redirect("/login");
     } else {
-      // go to the next callback in the chain
-      next();
     }
   };
 </script>
@@ -23,8 +27,8 @@
 <Tailwind />
 <main>
   <Router>
-    <Route path="/" component={Login} {data} />
-    <Route path="/dashboard" component={Dashboard} />
+    <Route path="/" component={Dashboard} middleware={[guard]} />
+    <Route path="/dashboard" component={Dashboard} middleware={[guard]}/>
     <Route path="/login" component={Login} />
     <!-- <Route path="/profile/:username" let:params>
       <h2>Hello {params.username}!</h2>

@@ -5,14 +5,13 @@
   import Bee24 from "carbon-icons-svelte/lib/Bee24";
   import * as yup from "yup";
   import { Form, Input } from "sveltejs-forms";
-  import axios from 'axios';
-  import { redirect } from "../../pager";
 
-  let url = "BASE_URL";
+  export let submitHandler = async (values) => {};
 
-  async function handleSubmit({ detail: { values, setSubmitting, resetForm } }) {     
+  const handleSubmit = async ({ detail: { values, setSubmitting, resetForm } }) => { 
     
-    await validateLogin(values);  
+    await submitHandler(values);
+     
     setSubmitting(false);
     
     resetForm({
@@ -20,21 +19,12 @@
       password: '',
     });
   }
-  
-  const validateLogin = async (values) => {
-
-    const { data } = await axios.post(`${url}/login`, 
-      values
-    );
-    if (data.user.length) {
-      redirect('/dashboard');
-    };
-  };
 
   const schema = yup.object().shape({
     email: yup.string().required().email(),
     password: yup.string(),
   });
+
 </script>
 
 <style>
